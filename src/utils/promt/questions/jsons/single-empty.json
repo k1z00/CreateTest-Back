@@ -1,0 +1,30 @@
+{
+  "seed": "...",
+  "title": "...",
+  "source": "...",
+  "questions": [
+    {
+      "text": "... ... ...?",
+      "typeAnswer": "single",
+      "answers": [
+        {
+          "value": "...",
+          "isCorrect": true
+        },
+        {
+          "value": "...",
+          "isCorrect": false
+        },
+        {
+          "value": "...",
+          "isCorrect": false
+        },
+        {
+          "value": "...",
+          "isCorrect": false
+        }
+      ]
+    }
+  ],
+  "counts": 1
+}
