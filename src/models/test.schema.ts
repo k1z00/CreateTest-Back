@@ -37,7 +37,45 @@ const TestListSchema = z.object({
   }),
 })
 
+const PassedTestSchema = z.object({
+  id: z.number().openapi({
+    description: 'Unique identifier for the passed test record.',
+  }),
+  testId: z.number().openapi({
+    description: 'Identifier of the test that was passed.',
+  }),
+  userId: z.number().openapi({
+    description: 'Identifier of the user who passed the test.',
+  }),
+  answers: z.array(
+    z.object({
+      questionIndex: z.number().openapi({
+        description: 'Index of the question in the test.',
+      }),
+      answerIndex: z.union([
+        z.string(),
+        z.number(),
+        z.array(z.number()),
+      ]).openapi({
+        description: 'Index or indices of the selected answer(s).',
+      }),
+    }),
+  ).openapi({
+    description: 'List of answers provided by the user for the test questions.',
+  }),
+})
+
+const UserPassedTestListSchema = z.object({
+  id: z.number().openapi({
+    description: 'Database identifier.',
+  }),
+  createdAt: z.date(),
+  test: TestListSchema,
+})
+
 export {
+  PassedTestSchema,
   TestListSchema,
   TestSchema,
+  UserPassedTestListSchema,
 }

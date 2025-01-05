@@ -1,7 +1,10 @@
+import type { Permission, User } from '~/models/user'
 import { OpenAPIHono as Hono } from '@hono/zod-openapi'
 
 interface ContextVariables {
-  token: string
+  jwt: string
+  user: User
+  userPermissions: Permission[]
 }
 
 abstract class AController {

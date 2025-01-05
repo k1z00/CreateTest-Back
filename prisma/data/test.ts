@@ -120,3 +120,28 @@ export async function mockTests() {
   },
   ]
 }
+
+export async function mockPassedTests() {
+  return [{
+    id: 1,
+    testId: 1,
+    userId: 1,
+    createdAt: '2023-10-25T18:52:41.009Z',
+    answers: [{
+      questionIndex: 0,
+      answerIndex: 1,
+    }, {
+      questionIndex: 1,
+      answerIndex: 1,
+    }, {
+      questionIndex: 2,
+      answerIndex: 1,
+    }, {
+      questionIndex: 3,
+      answerIndex: 1,
+    }, {
+      questionIndex: 4,
+      answerIndex: 1,
+    }],
+  }]
+}

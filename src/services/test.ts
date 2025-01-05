@@ -1,3 +1,4 @@
+import type { SavePassedTest } from '~/models/test'
 import { HTTPException } from 'hono/http-exception'
 import { prisma } from '~/prisma'
 
@@ -43,6 +44,55 @@ class TestService {
     }
     catch {
       throw new HTTPException(400, { message: 'Failed to retrieve test list.' })
+    }
+  }
+
+  getUserPassedTestList = async (page: number, limit: number, userId: number) => {
+    try {
+      const skip = (page - 1) * limit
+
+      const [data, total] = await Promise.all([
+        prisma.passedTest.findMany({
+          skip,
+          take: limit,
+          select: {
+            id: true,
+            createdAt: true,
+            Test: {
+              select: {
+                id: true,
+                title: true,
+                source: true,
+                counts: true,
+              },
+            },
+          },
+          where: {
+            userId,
+          },
+        }),
+        prisma.passedTest.count({ where: { userId } }),
+      ])
+
+      const transformedData = data.map(({ Test, ...rest }) => ({ ...rest, test: Test }))
+
+      return { data: transformedData, total }
+    }
+    catch {
+      throw new HTTPException(400, { message: 'Failed to retrieve passed test list.' })
+    }
+  }
+
+  savePassedTest = async (payload: SavePassedTest) => {
+    try {
+      const data = await prisma.passedTest.create({
+        data: payload,
+      })
+
+      return data.id
+    }
+    catch {
+      throw new HTTPException(400, { message: 'Failed to save passed test.' })
     }
   }
 }

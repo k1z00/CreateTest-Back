@@ -6,7 +6,29 @@ interface Test extends LlvmTest {
 
 type TestList = Omit<Test, 'questions' | 'seed'>
 
+interface PassedTest {
+  id: number
+  createdAt?: Date
+  testId: number
+  userId: number
+  answers: {
+    questionIndex: number
+    answerIndex: string | number | number[]
+  }[]
+}
+
+interface UserPassedTestList {
+  id: number
+  createdAt: Date
+  test: TestList
+}
+
+type SavePassedTest = Omit<PassedTest, 'id'>
+
 export type {
+  PassedTest,
+  SavePassedTest,
   Test,
   TestList,
+  UserPassedTestList,
 }

@@ -5,10 +5,10 @@ import * as data from './data'
 const seeds = [
   { name: 'user', data: [data.mockUsers] },
   { name: 'test', data: [data.mockTests] },
+  { name: 'passedTest', data: [data.mockPassedTests] },
 ]
 
 const prisma = new PrismaClient()
-
 const logger = new Logger()
 
 async function run() {

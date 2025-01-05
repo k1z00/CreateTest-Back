@@ -20,6 +20,7 @@ model User {
   updatedAt DateTime @default(now()) @updatedAt
 
   UserPermission UserPermission[]
+  PassedTest     PassedTest[]
 
   @@map(name: "user")
 }
@@ -50,5 +51,23 @@ model Test {
   counts    Int
   questions Json // Просто для удобства
 
+  PassedTest PassedTest[]
+
   @@map(name: "test")
+}
+
+model PassedTest {
+  id      Int  @id @unique @default(autoincrement())
+  testId  Int
+  userId  Int
+  answers Json // Просто для удобства
+
+  createdAt DateTime @default(now())
+
+  Test Test @relation(fields: [testId], references: [id], onDelete: Cascade)
+  User User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([testId])
+  @@index([userId])
+  @@map(name: "passed_test")
 }
