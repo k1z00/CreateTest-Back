@@ -1,6 +1,7 @@
 export async function mockTests() {
   return [{
     id: 1,
+    authorId: 1,
     title: 'История Древнего Рима',
     source: 'Исторические источники и учебники по древнеримской истории',
     seed: '123456789',

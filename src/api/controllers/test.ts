@@ -11,6 +11,7 @@ class TestController extends AController {
   constructor() {
     super('/test')
 
+    this.getUserTestList()
     this.getTestList()
     this.getUserPassedTestList()
     this.getTest()
@@ -87,6 +88,53 @@ class TestController extends AController {
       async (c) => {
         const { page, limit } = c.req.valid('query')
         const { data, total } = await this.service.getTestList(page, limit)
+
+        return c.json(
+          {
+            data: z.array(TestListSchema).parse(data),
+            pagination: {
+              page,
+              limit,
+              total,
+            },
+          },
+          200,
+        )
+      },
+    )
+  }
+
+  private getUserTestList = () => {
+    const route = createRoute({
+      method: 'get',
+      path: `${this.path}/my-list`,
+      tags: ['test'],
+      request: {
+        headers: z.object({ 'x-authorizaition': z.string() }),
+        query: z.object({
+          page: PageSchema,
+          limit: PageLimitSchema,
+        }),
+      },
+      responses: {
+        200: {
+          content: {
+            'application/json': {
+              schema: DataListSchema(TestListSchema),
+            },
+          },
+          description: 'Retrieve list of tests with pagination',
+        },
+      },
+    })
+
+    this.router.use(route.path, jwtGuard)
+    this.router.openapi(
+      route,
+      async (c) => {
+        const { page, limit } = c.req.valid('query')
+        const user = c.get('user')
+        const { data, total } = await this.service.getTestList(page, limit, user)
 
         return c.json(
           {

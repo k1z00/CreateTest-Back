@@ -7,6 +7,7 @@ const AuthUserSchema = z.object({
 })
 
 const SignUpUserPayloadSchema = z.object({
+  name: z.string().optional(),
   email: z.string().email(),
   email_verification_code: z.string(),
   password: z.string().min(8).max(20),

@@ -1,4 +1,5 @@
 import { z } from '@hono/zod-openapi'
+import { TestSchema } from './test.schema'
 
 const LlvmTestPayloadSchema = z.object({
   title: z.string().openapi({
@@ -53,8 +54,11 @@ const LlvmTestSchema = z.object({
   }),
 })
 
+const LlvmTestResponseSchema = z.union([LlvmTestSchema, TestSchema])
+
 export {
   LlvmTestPayloadSchema,
   LlvmTestQuestionSchema,
+  LlvmTestResponseSchema,
   LlvmTestSchema,
 }

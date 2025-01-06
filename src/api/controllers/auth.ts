@@ -46,11 +46,11 @@ class AuthController extends AController {
       route,
       async (c) => {
         const user = c.get('user')
-        const jwt = c.get('jwt')
+        const token = c.get('token')
 
         const data = {
           user,
-          token: jwt,
+          token,
         }
 
         return c.json(AuthUserSchema.parse(data), 200)
@@ -88,7 +88,6 @@ class AuthController extends AController {
       route,
       async (c) => {
         const body = c.req.valid('json')
-
         const data = await this.service.signUp(body)
 
         return c.json(AuthUserSchema.parse(data), 200)

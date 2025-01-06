@@ -2,19 +2,20 @@ import type { LlvmTest } from './llvm'
 
 interface Test extends LlvmTest {
   id: number
+  authorId: number
 }
 
 type TestList = Omit<Test, 'questions' | 'seed'>
 
 interface PassedTest {
   id: number
-  createdAt?: Date
   testId: number
   userId: number
   answers: {
     questionIndex: number
     answerIndex: string | number | number[]
   }[]
+  createdAt?: Date
 }
 
 interface UserPassedTestList {

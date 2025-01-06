@@ -21,6 +21,7 @@ model User {
 
   UserPermission UserPermission[]
   PassedTest     PassedTest[]
+  Test           Test[]
 
   @@map(name: "user")
 }
@@ -50,9 +51,13 @@ model Test {
   seed      String
   counts    Int
   questions Json // Просто для удобства
-
+  authorId  Int
+  
   PassedTest PassedTest[]
 
+  User User @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@index([authorId])
   @@map(name: "test")
 }
 

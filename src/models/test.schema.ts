@@ -1,5 +1,25 @@
 import { z } from '@hono/zod-openapi'
-import { LlvmTestQuestionSchema } from './llvm.schema'
+
+const LlvmTestAnswerSchema = z.object({
+  value: z.string().openapi({
+    description: 'The text of the answer.',
+  }),
+  isCorrect: z.boolean().openapi({
+    description: 'Indicates whether the answer is correct.',
+  }),
+})
+
+const LlvmTestQuestionSchema = z.object({
+  text: z.string().openapi({
+    description: 'The text of the question.',
+  }),
+  typeAnswer: z.enum(['single']).openapi({
+    description: 'The type of answer: single.',
+  }),
+  answers: z.array(LlvmTestAnswerSchema).openapi({
+    description: 'The list of possible answers for the question.',
+  }),
+})
 
 const TestSchema = z.object({
   id: z.number().openapi({

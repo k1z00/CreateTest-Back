@@ -19,6 +19,7 @@ class AuthService {
     try {
       await prisma.user.create({
         data: {
+          name: payload.name,
           email: payload.email,
           password: hashedPassword,
         },

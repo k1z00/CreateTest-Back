@@ -1,7 +1,7 @@
 import { createRoute } from '@hono/zod-openapi'
 import AController from '~/api/interfaces/controller.abstract'
-import { LlvmTestPayloadSchema } from '~/models/llvm.schema'
-import { TestSchema } from '~/models/test.schema'
+import { jwtGuard } from '~/middleware'
+import { LlvmTestPayloadSchema, LlvmTestResponseSchema } from '~/models/llvm.schema'
 import { LlvmService } from '~/services'
 
 class LlvmController extends AController {
@@ -11,6 +11,7 @@ class LlvmController extends AController {
     super('/llvm')
 
     this.generateTest()
+    this.guestGenerateTest()
   }
 
   private generateTest = () => {
@@ -31,7 +32,46 @@ class LlvmController extends AController {
         200: {
           content: {
             'application/json': {
-              schema: TestSchema,
+              schema: LlvmTestResponseSchema,
+            },
+          },
+          description: 'Generate test',
+        },
+      },
+    })
+
+    this.router.use(route.path, jwtGuard)
+    this.router.openapi(
+      route,
+      async (c) => {
+        const body = c.req.valid('json')
+        const user = c.get('user')
+        const data = await this.service.generateTest(body, user)
+
+        return c.json(LlvmTestResponseSchema.parse(data), 200)
+      },
+    )
+  }
+
+  private guestGenerateTest = () => {
+    const route = createRoute({
+      method: 'post',
+      path: `${this.path}/guest-generate-test`,
+      tags: ['llvm'],
+      request: {
+        body: {
+          content: {
+            'application/json': {
+              schema: LlvmTestPayloadSchema,
+            },
+          },
+        },
+      },
+      responses: {
+        200: {
+          content: {
+            'application/json': {
+              schema: LlvmTestResponseSchema,
             },
           },
           description: 'Generate test',
@@ -45,7 +85,7 @@ class LlvmController extends AController {
         const body = c.req.valid('json')
         const data = await this.service.generateTest(body)
 
-        return c.json(TestSchema.parse(data), 200)
+        return c.json(LlvmTestResponseSchema.parse(data), 200)
       },
     )
   }

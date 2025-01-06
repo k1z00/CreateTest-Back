@@ -24,7 +24,7 @@ async function jwtGuard(c: Context, next: Next) {
     const user = await userService.getUserByUserId(decoded.userId)
     const userPermissions = await userService.getPermissionsByUserId(user.id)
 
-    c.set('jwt', token)
+    c.set('token', token)
     c.set('user', user)
     c.set('permissions', userPermissions)
 

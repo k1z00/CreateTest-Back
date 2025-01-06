@@ -1,4 +1,5 @@
 import type { SavePassedTest } from '~/models/test'
+import type { User } from '~/models/user'
 import { HTTPException } from 'hono/http-exception'
 import { prisma } from '~/prisma'
 
@@ -22,7 +23,7 @@ class TestService {
     }
   }
 
-  getTestList = async (page: number, limit: number) => {
+  getTestList = async (page: number, limit: number, user?: User) => {
     try {
       const skip = (page - 1) * limit
 
@@ -36,6 +37,14 @@ class TestService {
             source: true,
             counts: true,
           },
+          ...(user
+            ? {
+                where: {
+                  authorId: user.id,
+                },
+              }
+            : {}
+          ),
         }),
         prisma.test.count(),
       ])

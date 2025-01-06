@@ -1,4 +1,5 @@
 interface SignUpUserPayload {
+  name?: string
   password: string
   email: string
   email_verification_code: string
