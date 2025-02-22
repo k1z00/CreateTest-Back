@@ -1,10 +1,9 @@
 import OpenAI from 'openai'
 
 const openai = new OpenAI({
-  baseURL: 'https://api.deepseek.com',
+  baseURL: 'https://openrouter.ai/api/v1/',
   apiKey: process.env.DEEP_SEEK_KEY,
 })
-
 function createAiRequest(systemPromt: string, userPromt: string) {
   return openai.chat.completions.create({
     messages: [
